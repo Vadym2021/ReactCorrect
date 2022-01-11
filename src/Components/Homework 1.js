@@ -4,6 +4,7 @@ function Table(props){
     return (
         <div>
             <div>{name}</div>
+            <div>{username}</div>
             <img src={pic} alt=""/>
 
             {/*Взяти масив usersList.*/}
