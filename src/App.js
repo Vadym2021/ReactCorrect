@@ -3,6 +3,10 @@ import Table from "./Components/Homework 1";
 import {useEffect, useState} from "react";
 import JsonTable from "./Components/Homework new";
 import SpaceX from "./Components/SpaceX";
+import Hometask02 from "./Components/Hometask 02";
+import Form from "./Components/Form";
+import Users from "./Components/Users";
+import {userService} from "./services/user_service";
 
 
 let usersList = [
@@ -240,23 +244,59 @@ let usersList = [
 
 function App() {
 
+    const [users, setUsers] = useState([]);
+    const [filteredUsers, setFilteredUsers] = useState([]);
+
+    useEffect(() => {
+        userService.getAll().then(value => {
+            setUsers([...value])
+            setFilteredUsers([...value])
+        })
+    }, [])
+
+    const getFilter = (data) => {
+        let filterArray = [...users]
+
+        if(data.name){
+            filterArray=filterArray.filter(user =>user.name.toLowerCase().includes(data.name.toLowerCase()))
+        }
+        if(data.username){
+            filterArray=filterArray.filter(user =>user.username.toLowerCase().includes(data.username.toLowerCase()))
+        }
+        if(data.email){
+            filterArray=filterArray.filter(user =>user.email.toLowerCase().includes(data.email.toLowerCase()))
+        }
+        setFilteredUsers(filterArray)
+
+    }
+
+
     return (
+
+
         <div className="App">
+            <Form getFilter = {getFilter}/>
+            <Users users = {filteredUsers}/>
+
+
+
+
             {
                 usersList.map(item => <Table key={item.id} user={item}/>)
             }
 
             <div>
-                <SpaceX/>
+                <Hometask02/>
             </div>
-            <div>
-                <JsonTable/>
-            </div>
+
+
         </div>
     );
 }
 
 export default App;
+
+
 //
 //
 // function App() {
